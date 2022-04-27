@@ -1,0 +1,56 @@
+<?php
+namespace AndreaLagaccia\Tnt;
+
+
+class ErrorCodes
+{
+    return [
+        '0001' => 'Cliente non valido',
+        '0012' => 'Indirizzo IP non valido',
+        '0415' => 'Campo non valido o mancante',
+        '2014' => 'Lettera di vettura errata',
+        '2015' => 'Check Digits errato su lettera di controllo',
+        '2016' => 'Peso errato',
+        '2017' => 'Volume errato',
+        '2018' => 'Numero totale colli errato',
+        '2019' => 'Valore assicurato errato',
+        '2020' => 'Valore fattura errato',
+        '2021' => 'Valore contrassegno errato',
+        '2022' => 'Indirizzo mittente ambiguo',
+        '2023' => 'Indirizzo destinatario ambiguo',
+        '2024' => 'Spedizione giá chiusa',
+        '2025' => 'Lettera di spedizione giá presente come effettiva',
+        '2026' => 'Lettera di spedizione giá presente come presunta',
+        '2027' => 'Incongruenza spedizione',
+        '2031' => 'Non é concesso eliminare colli da una spedizione spuntata.',
+        '2032' => 'Non é concesso modificare un collo spuntato.',
+        '2033' => 'Non é concesso eliminare un collo spuntato.',
+        '2035' => 'Impossibile aggiornare spedizioni dopo l’orario di Cut-Off',
+        '2038' => 'Indirizzo mittente valido solo su localitá',
+        '2039' => 'Indirizzo destinatario valido solo su localitá',
+        '2040' => 'Localitá mittente errata',
+        '2041' => 'Localitá destinatario errata',
+        '2042' => 'La lettera di vettura inviata é stata sostituita.',
+        '2043' => 'Tagliando errato',
+        '2044' => 'Telefono destinatario non indicato.',
+        '2045' => 'Non é concessa la ristampa su spedizioni errate.',
+        '2046' => 'Il servizio richiesto é stato sostituito.',
+        '2047' => 'Impossibile operare su spedizioni annullate.',
+        '2054' => 'Riferimento fattura errato o mancante.',
+        '2055' => 'Allegato fattura errato o mancante.',
+        '2056' => 'Numero offerta errata o mancante.',
+        '2057' => 'Riferimento fattura non richiesto.',
+        '2058' => 'Riferimento allegato fattura non richiesto.',
+        '2059' => 'Numero offerta non richiesto.',
+        '2060' => 'Operazione non possibile, il numero di spedizione non é presente',
+        '2061' => 'Numero di spedizione gia’ inserito',
+        '2062' => 'Localitá di consegna errata',
+        '2063' => 'Localitá di ritiro errata',
+        '2064' => 'Collo nr. <????> inesistente',
+        '2231' => 'Dati di ritiro non validi . collectiondate',
+        '89024' => 'Riferimento allegato fattura non richiesto.',
+        '90019' => 'Numero offerta non richiesto.',
+        '99995' => 'Errore generico su connessione rifiutata',
+
+    ];
+}

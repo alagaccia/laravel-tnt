@@ -1,5 +1,5 @@
 <?php
-namespace AndreaLagaccia\Sendinblue;
+namespace AndreaLagaccia\Tnt;
 
 class Tnt
 {

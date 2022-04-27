@@ -1,5 +1,5 @@
 <?php
-namespace AndreaLagaccia\Sendinblue;
+namespace AndreaLagaccia\Tnt;
 
 use AndreaLagaccia\Tnt\Tnt;
 use Spatie\ArrayToXml\ArrayToXml;
