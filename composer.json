@@ -1,0 +1,28 @@
+{
+    "name": "alagaccia/laravel-tnt",
+    "description": "TNT SOAP client for Laravel Projects",
+    "type": "library",
+    "license": "NLPL",
+    "authors": [
+        {
+            "name": "Andrea Lagaccia",
+            "email": "a.lagaccia@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "AndreaLagaccia\\Tnt\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "AndreaLagaccia\\Tnt\\TntServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "php": "^7.3|^8.0",
+        "spatie/array-to-xml": "^2.16"
+    }
+}
