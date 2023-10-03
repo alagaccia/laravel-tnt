@@ -144,7 +144,7 @@ class Shipping extends Tnt
             'user' => "{$this->user}",
             'password' => "{$this->password}",
             'langid' => 'IT',
-        ]
+        ];
     }
 
     public function sender()
