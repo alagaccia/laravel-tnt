@@ -6,15 +6,19 @@ use Spatie\ArrayToXml\ArrayToXml;
 
 class Tracking extends Tnt
 {
+    protected $url;
+
     public function __construct()
     {
         parent::__construct();
+        
+        $this->url = 'https://www.mytnt.it/XMLServices';
     }
-
+    
     public function post(array $data, $consignmentno)
     {
         try {
-            $res = \Http::post('https://www.mytnt.it/XMLServices', [
+            $res = \Http::post($this->url, [
                 'xmlin' => $this->createXML($consignmentno),
             ]);
 

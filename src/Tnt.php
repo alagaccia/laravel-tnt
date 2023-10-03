@@ -3,26 +3,17 @@ namespace AndreaLagaccia\Tnt;
 
 class Tnt
 {
-    protected $soap_url;
     protected $customer;
     protected $user;
     protected $password;
     protected $senderAccId;
 
-    protected const SOAP_URL = "https://www.mytnt.it/ResiService/ResiServiceImpl.wsdl";
-
     public function __construct()
     {
-        $this->set_soap_url();
         $this->set_customer();
         $this->set_user();
         $this->set_password();
         $this->set_senderAccId();
-    }
-
-    public function set_soap_url()
-    {
-        $this->soap_url = self::SOAP_URL;
     }
 
     public function set_customer()

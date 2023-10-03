@@ -6,9 +6,13 @@ use Spatie\ArrayToXml\ArrayToXml;
 
 class Shipping extends Tnt
 {
+    protected $url;
+
     public function __construct()
     {
         parent::__construct();
+        
+        $this->url = 'https://www.mytnt.it/ResiService/ResiServiceImpl.wsdl';
     }
 
     public function store(array $data, $consignmentno)
@@ -20,7 +24,7 @@ class Shipping extends Tnt
         */
 
         try {
-            $soap = new \SoapClient($this->soap_url);
+            $soap = new \SoapClient($this->url);
 
             $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $this->createXML($type = "INSERT", $consignmentno)]]);
 
@@ -37,7 +41,7 @@ class Shipping extends Tnt
     public function destroy()
     {
         try {
-            $soap = new \SoapClient($this->soap_url);
+            $soap = new \SoapClient($this->url);
 
             $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $this->createXML($type = "DELETE", $consignmentno)]]);
 
@@ -81,7 +85,7 @@ class Shipping extends Tnt
 
         $data = [
             'software' => [
-                'application' => 'MYRTL',
+                'application' => 'MYRTL', // MYRTLI = internazionale
                 'version' => '1.0',
             ],
             'security' => $this->security(),
@@ -92,48 +96,25 @@ class Shipping extends Tnt
                     'insurance' => 'N',
                     'hazardous' => 'N',
                     'cashondelivery' => 'N',
-                    'codcommission' => 'S',
-                    'insurancecommission' => 'S',
+                    'codcommission' => 'S', // S = mittente, R = destinatario
+                    'insurancecommission' => 'S', // S = mittente, R = destinatario
                     'operationaloption' => '0',
                     'highvalue' => 'N',
                     'specialgoods' => 'N',
                 ],
-                'laroseDepot' => '',
-                'labelType' => 'P',
                 'senderAccId' => "{$this->senderAccId}",
-                'consignmentno' => "{$consignmentno}",
-                'PrintInstrDocs' => 'N',
-                'consignmenttype' => 'C',
-                'actualweight' => '00001500',
-                'actualvolume' => '0000010',
-                'totalpackages' => '1',
-                'packagetype' => 'C',
+                'consignmentno' => "{$consignmentno}", // Alphanumeric <=15 digit
+                'consignmenttype' => 'C', // C = chiave fornita dal client, T = fornita da TNT
+                'actualweight' => '00001500', // variabile in grammi
+                'totalpackages' => '1', // variabile
+                'packagetype' => 'C', // C= Colli, S= Buste; B Bauletti piccoli; D Bauletti grandi
                 'division' => '',
                 'product' => 'N',
-                'vehicle' => 'C',
-                'insurancevalue' => '0000000000000',
-                'insurancecurrency' => 'EUR',
-                'packingdesc' => '',
-                'reference' => '123INPUT',
-                'collectiondate' => '23032022',
-                'collectiontime' => '1500',
-                'invoicevalue' => '0000000000000',
-                'invoicecurrency' => 'EUR',
-                'specialinstructions' => '',
-                'options' => [
-                    'option' => '',
-                ],
-                'termsofpayment' => 'S',
-                'systemcode' => 'RL',
-                'systemversion' => '1.0',
-                'codfvalue' => '0000000000000',
-                'codfcurrency' => 'EUR',
-                'goodsdesc' => '',
-                'eomenclosure' => '',
-                'eomofferno' => '',
-                'eomdivision' => '',
-                'eomunification' => '',
-                'dropoffpoint' => '',
+                'collectiondate' => '23032022', // data di affidamento a spedizione YYYYMMDD
+                'termsofpayment' => 'S', // S = mittente, R = destinatario
+                'systemcode' => 'RL', // fisso
+                'systemversion' => '1.0', // fisso
+
                 'addresses' => [
                     [ 'address' => $this->sender() ],
                     [ 'address' => $this->collection() ],
@@ -141,21 +122,11 @@ class Shipping extends Tnt
                 ],
                 'dimensions' => [
                     '_attributes' => [
-                        'itemaction' => 'I',
+                        'itemaction' => 'I', // I inserimento, D cancellazione, R ristampa
                     ],
-                    'itemsequenceno' => '00001',
-                    'itemtype' => 'C',
-                    'itemreference' => '1',
-                    'volume' => '',
-                    'weight' => '00001500',
-                    'length' => '015000',
-                    'height' => '020000',
-                    'width' =>  '003000',
+                    'itemtype' => 'C', // C collo, S buste, B bauletti piccoli, D Bauletti grandi
+                    'weight' => '00001500', // grammi
                     'quantity' => '1',
-                ],
-                'articles' => [
-                    'tariff' => '',
-                    'origcountry' => '',
                 ],
             ]
         ];
