@@ -8,32 +8,39 @@ class Tnt
     protected $password;
     protected $senderAccId;
 
-    public function __construct()
+    public function __construct($credentials = null)
     {
-        $this->set_customer();
-        $this->set_user();
-        $this->set_password();
-        $this->set_senderAccId();
+        $this->set_credentials($credentials);
     }
 
-    public function set_customer()
+    public function set_credentials($credentials)
     {
-        $this->customer = config('tnt.CUSTOMER') ?? env('TNT_CUSTOMER');
+        $data = json_decode($credentials);
+
+        $this->set_customer($data['customer']);
+        $this->set_user($data['user']);
+        $this->set_password($data['password']);
+        $this->set_senderAccId($data['senderAccId']);
     }
 
-    public function set_user()
+    public function set_customer($param = null)
     {
-        $this->user = config('tnt.USER') ?? env('TNT_USER');
+        $this->customer = $param ?? config('tnt.CUSTOMER') ?? env('TNT_CUSTOMER');
     }
 
-    public function set_password()
+    public function set_user($param = null)
     {
-        $this->password = config('tnt.PASSWORD') ?? env('TNT_PASSWORD');
+        $this->user = $param ?? config('tnt.USER') ?? env('TNT_USER');
     }
 
-    public function set_senderAccId()
+    public function set_password($param = null)
     {
-        $this->senderAccId = config('tnt.SENDER_ACC_ID') ?? env('TNT_SENDER_ACC_ID');
+        $this->password = $param ?? config('tnt.PASSWORD') ?? env('TNT_PASSWORD');
+    }
+
+    public function set_senderAccId($param = null)
+    {
+        $this->senderAccId = $param ?? config('tnt.SENDER_ACC_ID') ?? env('TNT_SENDER_ACC_ID');
     }
 
 }
