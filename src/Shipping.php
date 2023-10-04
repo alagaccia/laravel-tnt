@@ -198,13 +198,13 @@ class Shipping extends Tnt
     {
         return [
             'addressType' => 'S',
-            'name' => $this->movement->sender['business_name'],
-            'addrline1' => $this->movement->sender['address_street'],
+            'name' => $this->movement->sender->business_name,
+            'addrline1' => $this->movement->sender->address_street,
             'addrline2' => '',
-            'town' => $this->movement->sender['address_city'],
-            'postcode' => $this->movement->sender['address_postcode'],
-            'province' => $this->movement->sender['address_province'],
-            'country' => $this->movement->sender['address_country'],
+            'town' => $this->movement->sender->address_city,
+            'postcode' => $this->movement->sender->address_postcode,
+            'province' => $this->movement->sender->address_province,
+            'country' => $this->movement->sender->address_country,
             'phone1' => '',
         ];
     }
@@ -213,13 +213,13 @@ class Shipping extends Tnt
     {
         return [
             'addressType' => 'C',
-            'name' => $this->movement->collection['name'],
-            'addrline1' => $this->movement->collection['address_street'],
-            'addrline2' => $this->movement->collection['address_at'] ?? null,
-            'town' => $this->movement->collection['address_city'],
-            'postcode' => $this->movement->collection['address_postcode'],
-            'province' => $this->movement->collection['address_province'],
-            'country' => $this->movement->collection['address_country'],
+            'name' => $this->movement->collection->name,
+            'addrline1' => $this->movement->collection->address_street,
+            'addrline2' => $this->movement->collection->address_at ?? null,
+            'town' => $this->movement->collection->address_city,
+            'postcode' => $this->movement->collection->address_postcode,
+            'province' => $this->movement->collection->address_province,
+            'country' => $this->movement->collection->address_country,
             'phone1' => '',
         ];
     }
@@ -227,14 +227,14 @@ class Shipping extends Tnt
     public function receiver()
     {
         return [
-            'name' => $this->movement->receiver['name'],
-            'addrline1' => $this->movement->receiver['address_street'],
-            'addrline2' => $this->movement->receiver['address_at'] ?? null,
-            'town' => $this->movement->receiver['address_city'],
-            'postcode' => $this->movement->receiver['address_postcode'],
-            'province' => $this->movement->receiver['address_province'],
-            'country' => $this->movement->receiver['address_country'],
-            'phone1' => $this->movement->receiver['phone'],
+            'name' => $this->movement->receiver->name,
+            'addrline1' => $this->movement->receiver->address_street,
+            'addrline2' => $this->movement->receiver->address_at ?? null,
+            'town' => $this->movement->receiver->address_city,
+            'postcode' => $this->movement->receiver->address_postcode,
+            'province' => $this->movement->receiver->address_province,
+            'country' => $this->movement->receiver->address_country,
+            'phone1' => $this->movement->receiver->phone,
         ];
     }
 }
