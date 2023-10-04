@@ -9,6 +9,7 @@ class Shipping extends Tnt
     protected $url;
     protected $data;
     protected $movement;
+    protected $consignmentno;
 
     /*
      * Il metodo getPDFLabel della classe ResiServiceImpl, riceve come parametro la stringa xml di input
@@ -41,7 +42,7 @@ class Shipping extends Tnt
         try {
             $soap = new \SoapClient($this->url);
 
-            $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $this->createXML($type = "INSERT")]]);
+            $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $this->createXML(type: "INSERT")]]);
 
             if ( ! $res->getPDFLabelReturn->documentCorrect ) {
                 dd($res->getPDFLabelReturn->outputString);
@@ -63,7 +64,7 @@ class Shipping extends Tnt
             $arrayXml = json_decode($xml, associative: true);
             // Sostituire type of action con PRINT
 
-            $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $this->createXML($type = "PRINT")]]);
+            $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $this->createXML(type: "PRINT")]]);
 
             if ( ! $res->getPDFLabelReturn->documentCorrect ) {
                 dd($res->getPDFLabelReturn->outputString);
@@ -77,12 +78,14 @@ class Shipping extends Tnt
         }
     }
 
-    public function destroy($consignmentNumber)
+    public function destroy($consignmentno)
     {
+        $this->consignmentno = $consignmentno;
+
         try {
             $soap = new \SoapClient($this->url);
 
-            $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $this->createXML($type = "DELETE", $consignmentNumber)]]);
+            $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $this->createXML(type: "DELETE")]]);
 
             if ( ! $res->getPDFLabelReturn->documentCorrect ) {
                 dd($res->getPDFLabelReturn->outputString);
@@ -144,8 +147,8 @@ class Shipping extends Tnt
                     'specialgoods' => 'N',
                 ],
                 'senderAccId' => "{$this->senderAccId}",
-                'consignmentno' => isset($this->data['consignmentNumber']) ? "{$this->data['consignmentNumber']}" : null, // Alphanumeric <=15 digit
-                'consignmenttype' => isset($this->data['consignmentNumber']) ? 'C' : 'T', // C = chiave fornita dal client, T = fornita da TNT
+                'consignmentno' => $this->consignmentno ?? null, // Alphanumeric <=15 digit
+                'consignmenttype' => 'T', // C = chiave fornita dal client, T = fornita da TNT
                 
                 // colli
                 'actualweight' => '00001500', // variabile in grammi
