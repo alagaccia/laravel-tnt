@@ -227,6 +227,7 @@ class Shipping extends Tnt
     public function receiver()
     {
         return [
+            'addressType' => 'R',
             'name' => $this->movement->receiver->name,
             'addrline1' => $this->movement->receiver->address1,
             'addrline2' => $this->movement->receiver->address2 ?? null,
