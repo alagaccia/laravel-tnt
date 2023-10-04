@@ -198,7 +198,7 @@ class Shipping extends Tnt
     {
         return [
             'addressType' => 'S',
-            'name' => $this->movement->sender->business_name,
+            'name' => $this->movement->sender->name,
             'addrline1' => $this->movement->sender->address1,
             'addrline2' => '',
             'town' => $this->movement->sender->address_town,
