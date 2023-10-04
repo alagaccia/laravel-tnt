@@ -17,10 +17,10 @@ class Tnt
     {
         $data = json_decode($credentials);
 
-        $this->set_customer($data['customer']);
-        $this->set_user($data['user']);
-        $this->set_password($data['password']);
-        $this->set_senderAccId($data['senderAccId']);
+        $this->set_customer($credentials->customer);
+        $this->set_user($credentials->user);
+        $this->set_password($credentials->password);
+        $this->set_senderAccId($credentials->senderAccId);
     }
 
     public function set_customer($param = null)
