@@ -199,9 +199,9 @@ class Shipping extends Tnt
         return [
             'addressType' => 'S',
             'name' => $this->movement->sender->business_name,
-            'addrline1' => $this->movement->sender->address_street,
+            'addrline1' => $this->movement->sender->address1,
             'addrline2' => '',
-            'town' => $this->movement->sender->address_city,
+            'town' => $this->movement->sender->address_town,
             'postcode' => $this->movement->sender->address_postcode,
             'province' => $this->movement->sender->address_province,
             'country' => $this->movement->sender->address_country,
@@ -214,9 +214,9 @@ class Shipping extends Tnt
         return [
             'addressType' => 'C',
             'name' => $this->movement->collection->name,
-            'addrline1' => $this->movement->collection->address_street,
-            'addrline2' => $this->movement->collection->address_at ?? null,
-            'town' => $this->movement->collection->address_city,
+            'addrline1' => $this->movement->collection->address1,
+            'addrline2' => $this->movement->collection->address2 ?? null,
+            'town' => $this->movement->collection->address_town,
             'postcode' => $this->movement->collection->address_postcode,
             'province' => $this->movement->collection->address_province,
             'country' => $this->movement->collection->address_country,
@@ -228,9 +228,9 @@ class Shipping extends Tnt
     {
         return [
             'name' => $this->movement->receiver->name,
-            'addrline1' => $this->movement->receiver->address_street,
-            'addrline2' => $this->movement->receiver->address_at ?? null,
-            'town' => $this->movement->receiver->address_city,
+            'addrline1' => $this->movement->receiver->address1,
+            'addrline2' => $this->movement->receiver->address2 ?? null,
+            'town' => $this->movement->receiver->address_town,
             'postcode' => $this->movement->receiver->address_postcode,
             'province' => $this->movement->receiver->address_province,
             'country' => $this->movement->receiver->address_country,
