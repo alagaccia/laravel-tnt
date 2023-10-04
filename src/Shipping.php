@@ -7,7 +7,6 @@ use Spatie\ArrayToXml\ArrayToXml;
 class Shipping extends Tnt
 {
     protected $url;
-    protected $data;
     protected $movement;
     protected $consignmentno;
 
@@ -36,7 +35,6 @@ class Shipping extends Tnt
 
     public function store($data)
     {
-        $this->data = $data;
         $this->movement = $data['movement'];
 
         try {
@@ -127,7 +125,7 @@ class Shipping extends Tnt
             ]
         ];
 
-        $data = [
+        $body = [
             'software' => [
                 'application' => 'MYRTL', // MYRTLI = internazionale
                 'version' => '1.0',
@@ -181,7 +179,7 @@ class Shipping extends Tnt
         ];
 
 
-        $xml = ArrayToXml::convert($data, $rootElement, true, 'UTF-8', '1.0', []);
+        $xml = ArrayToXml::convert($body, $rootElement, true, 'UTF-8', '1.0', []);
 
         return $xml;
     }
