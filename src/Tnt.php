@@ -15,8 +15,6 @@ class Tnt
 
     public function set_credentials($credentials)
     {
-        $data = json_decode($credentials);
-
         $this->set_customer($credentials->customer);
         $this->set_user($credentials->user);
         $this->set_password($credentials->password);
