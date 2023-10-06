@@ -41,4 +41,13 @@ class Tnt
         $this->senderAccId = $param ?? config('tnt.SENDER_ACC_ID') ?? env('TNT_SENDER_ACC_ID');
     }
 
+    public function security()
+    {
+        return [
+            'customer' => "{$this->customer}",
+            'user' => "{$this->user}",
+            'password' => "{$this->password}",
+            'langid' => 'IT',
+        ];
+    }
 }

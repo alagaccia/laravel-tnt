@@ -23,6 +23,7 @@
     },
     "require": {
         "php": "^7.3|^8.0",
-        "spatie/array-to-xml": "^2.16"
+        "spatie/array-to-xml": "^2.16",
+        "illuminate/http": "^10.26"
     }
 }

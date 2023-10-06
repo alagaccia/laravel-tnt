@@ -3,6 +3,7 @@ namespace AndreaLagaccia\Tnt;
 
 use AndreaLagaccia\Tnt\Tnt;
 use Spatie\ArrayToXml\ArrayToXml;
+use Illuminate\Support\Facades\Http;
 
 class Tracking extends Tnt
 {
@@ -15,48 +16,52 @@ class Tracking extends Tnt
         $this->url = 'https://www.mytnt.it/XMLServices';
     }
     
-    public function post(array $data, $consignmentno)
+    public function get($consignmentno)
     {
         try {
-            $res = \Http::post($this->url, [
-                'xmlin' => $this->createXML($consignmentno),
+            $res = Http::asForm()->post('https://www.mytnt.it/XMLServices', [
+                'xmlin' => $this->createTrackingXML($consignmentno),
             ]);
+            $response = $res->body();
 
-            dd($res);
+            $xml =  simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
+
+            $json = json_encode($xml);
+            $array = json_decode($json, true);
+        
+            return $array;
+
         } catch (\Exception $e) {
-            return $e;
+            return $e->getMessage();
         }
     }
 
-    public function createXML($consignmentno)
+    public function xml_root()
     {
-        $rootElement = [
+        return [
             'rootElementName' => 'Document',
         ];
+    }
 
+    public function createTrackingXML($consignmentno)
+    {
         $data = [
-            'software' => [
-                'application' => 'MYTRA',
-                'version' => '2.0',
-            ],
+            'application' => 'MYTRA',
+            'version' => '2.0',
             'login' => $this->security(),
             'SearchCriteria' => [
                 'ConNo' => $consignmentno,
+            ],
+            'SearchParameters' => [
+                'SearchType' => 'Detail',
+                'SearchOption' => 'ConsignmentTracking',
+                'SearchMethod' => 'Forward',
+                'ExtraDetails' => 'ConsignmentDetail',
             ]
         ];
 
-        $xml = ArrayToXml::convert($data, $rootElement, true, 'UTF-8', '1.0', []);
+        $xml = ArrayToXml::convert($data, $this->xml_root(), true, 'UTF-8', '1.0', []);
 
         return $xml;
-    }
-
-    public function security()
-    {
-        return [
-            'customer' => "{$this->customer}",
-            'user' => "{$this->user}",
-            'password' => "{$this->password}",
-            'langid' => 'IT',
-        ]
     }
 }

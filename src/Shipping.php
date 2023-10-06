@@ -219,16 +219,6 @@ class Shipping extends Tnt
         return $xml;
     }
 
-    public function security()
-    {
-        return [
-            'customer' => "{$this->customer}",
-            'user' => "{$this->user}",
-            'password' => "{$this->password}",
-            'langid' => 'IT',
-        ];
-    }
-
     public function sender()
     {
         return [
