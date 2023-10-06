@@ -40,7 +40,7 @@ class Shipping extends Tnt
         try {
             $soap = new \SoapClient($this->url);
 
-            $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $this->createXML(type: "INSERT")]]);
+            $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $this->XML_create(type: "INSERT")]]);
 
             if ( ! $res->getPDFLabelReturn->documentCorrect ) {
                 abort(500, $res->getPDFLabelReturn->outputString);
@@ -62,7 +62,7 @@ class Shipping extends Tnt
             $arrayXml = json_decode($xml, associative: true);
             // Sostituire type of action con PRINT
 
-            $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $this->createXML(type: "PRINT")]]);
+            $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $this->XML_create(type: "PRINT")]]);
 
             if ( ! $res->getPDFLabelReturn->documentCorrect ) {
                 dd($res->getPDFLabelReturn->outputString);
@@ -87,7 +87,7 @@ class Shipping extends Tnt
         $this->consignmentno = $consignmentno;
 
         try {
-            $xml = $this->createXML(type: "DELETE");
+            $xml = $this->XML_delete();
 
             $soap = new \SoapClient($this->url);
             $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $xml]]);
@@ -105,7 +105,7 @@ class Shipping extends Tnt
         }
     }
 
-    public function createXML($type = "INSERT")
+    public function XML_create($type = "INSERT")
     {
         $typeOfAction = [
             "INSERT" => "I",
@@ -130,7 +130,7 @@ class Shipping extends Tnt
             'security' => $this->security(),
             'consignment' => [
                 '_attributes' => [
-                    'action' => "{$typeOfAction[$type]}",
+                    'action' => "I", // insert
                     'international' => 'N',
                     'insurance' => 'N',
                     'hazardous' => 'N',
@@ -172,6 +172,38 @@ class Shipping extends Tnt
                         'quantity' => $this->movement->total_boxes,
                     ]
                 ],
+            ]
+        ];
+
+
+        $xml = ArrayToXml::convert($body, $rootElement, true, 'UTF-8', '1.0', []);
+
+        return $xml;
+    }
+
+    public function XML_delete()
+    {
+        $rootElement = [
+            'rootElementName' => 'shipment',
+            '_attributes' => [
+                'xsi:noNamespaceSchemaLocation' => 'c:routinglabel.xsd',
+                'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
+            ]
+        ];
+
+        $body = [
+            'software' => [
+                'application' => 'MYRTL', // MYRTLI = internazionale
+                'version' => '1.0',
+            ],
+            'security' => $this->security(),
+            'consignment' => [
+                '_attributes' => [
+                    'action' => "D", // delete
+                ],
+                'senderAccId' => "{$this->senderAccId}",
+                'consignmentno' => $this->consignmentno ?? null, // Alphanumeric <=15 digit
+                'consignmenttype' => 'T', // C = chiave fornita dal client, T = fornita da TNT
             ]
         ];
 
