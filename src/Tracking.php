@@ -16,7 +16,7 @@ class Tracking extends Tnt
         $this->url = 'https://www.mytnt.it/XMLServices';
     }
     
-    public function get($ )
+    public function get($consignmentno)
     {
         if ( ! $consignmentno ) {
             throw new \Exception("Tracking number missing");
