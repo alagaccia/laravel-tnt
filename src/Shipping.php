@@ -56,19 +56,15 @@ class Shipping extends Tnt
         }
     }
 
-    public function print($xml)
+    public function print($consignmentno)
     {
+        $this->consignmentno = $consignmentno;
+
         try {
             $soap = new \SoapClient($this->url);
 
-            $arrayXml = json_decode($xml, associative: true);
-            // Sostituire type of action con PRINT
-            $arrayXml['shipment']['consignment']['_attributes']['action'] = 'R';
-            $xmlPrint = ArrayToXml::convert($arrayXml, '', true, 'UTF-8', '1.0', []);
-
-            return $xmlPrint;
-
-            $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $xmlPrint]]);
+            $xml = $this->XML_print();
+            $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $xml]]);
 
             if ( ! $res->getPDFLabelReturn->documentCorrect ) {
                 dd($res->getPDFLabelReturn->outputString);
@@ -185,6 +181,29 @@ class Shipping extends Tnt
         return $xml;
     }
 
+    public function XML_print()
+    {
+        $body = [
+            'software' => [
+                'application' => 'MYRTL', // MYRTLI = internazionale
+                'version' => '1.0',
+            ],
+            'security' => $this->security(),
+            'consignment' => [
+                '_attributes' => [
+                    'action' => "R", // delete
+                ],
+                'senderAccId' => "{$this->senderAccId}",
+                'consignmentno' => $this->consignmentno ?? null, // Alphanumeric <=15 digit
+                'consignmenttype' => 'T', // C = chiave fornita dal client, T = fornita da TNT
+            ]
+        ];
+
+        $xml = ArrayToXml::convert($body, $this->xml_root(), true, 'UTF-8', '1.0', []);
+
+        return $xml;
+    }
+
     public function XML_delete()
     {
         $body = [
@@ -202,7 +221,6 @@ class Shipping extends Tnt
                 'consignmenttype' => 'T', // C = chiave fornita dal client, T = fornita da TNT
             ]
         ];
-
 
         $xml = ArrayToXml::convert($body, $this->xml_root(), true, 'UTF-8', '1.0', []);
 
