@@ -18,6 +18,10 @@ class Tracking extends Tnt
     
     public function get($consignmentno)
     {
+        if ( ! $consignmentno ) {
+            abort(422, "Tracking number missing");
+        }
+        
         try {
             $res = Http::asForm()->post('https://www.mytnt.it/XMLServices', [
                 'xmlin' => $this->createTrackingXML($consignmentno),
