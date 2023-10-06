@@ -165,7 +165,7 @@ class Shipping extends Tnt
                 
                 'division' => '',
                 'product' => 'N',
-                'collectiondate' => $this->movement->collection_date?->format('Y-m-d') ?? now()->format('Ymd'), // data di affidamento a spedizione YYYYMMDD
+                'collectiondate' => $this->movement->collection_date?->format('Ymd') ?? now()->format('Ymd'), // data di affidamento a spedizione YYYYMMDD
                 'termsofpayment' => 'S', // S = mittente, R = destinatario
                 'systemcode' => 'RL', // fisso
                 'systemversion' => '1.0', // fisso
