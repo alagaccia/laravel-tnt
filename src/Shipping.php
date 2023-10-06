@@ -40,12 +40,16 @@ class Shipping extends Tnt
         try {
             $soap = new \SoapClient($this->url);
 
-            $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $this->XML_create(type: "INSERT")]]);
+            $xml = $this->XML_create();
+            $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $xml]]);
 
             if ( ! $res->getPDFLabelReturn->documentCorrect ) {
                 abort(500, $res->getPDFLabelReturn->outputString);
             } else {
-                return $res->getPDFLabelReturn->outputString;
+                return [
+                    'label_request' => $xml,
+                    'label_response' => $res->getPDFLabelReturn->outputString,
+                ];
             }
         } catch (\SoapFault $e) {
             header('Content-Type: text/html');
@@ -115,10 +119,10 @@ class Shipping extends Tnt
                 'xsi:noNamespaceSchemaLocation' => 'c:routinglabel.xsd',
                 'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
             ]
-            ];
+        ];
     }
 
-    public function XML_create($type = "INSERT")
+    public function XML_create()
     {
         $typeOfAction = [
             "INSERT" => "I",
