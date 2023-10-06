@@ -43,7 +43,7 @@ class Shipping extends Tnt
             $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $this->createXML(type: "INSERT")]]);
 
             if ( ! $res->getPDFLabelReturn->documentCorrect ) {
-                dd($res->getPDFLabelReturn->outputString);
+                abort(500, $res->getPDFLabelReturn->outputString);
             } else {
                 return $res->getPDFLabelReturn->outputString;
             }
@@ -67,6 +67,12 @@ class Shipping extends Tnt
             if ( ! $res->getPDFLabelReturn->documentCorrect ) {
                 dd($res->getPDFLabelReturn->outputString);
             } else {
+                // header('Content-Description: File Transfer');
+                // header('Content-Type: application/pdf');
+                // header('Content-Disposition: attachment; filename="Label.pdf"');
+                // header('Expires: 0');
+                // echo $res->getPDFLabelReturn->binaryDocument;
+
                 return $res->getPDFLabelReturn->outputString;
             }
         } catch (\SoapFault $e) {
@@ -81,9 +87,13 @@ class Shipping extends Tnt
         $this->consignmentno = $consignmentno;
 
         try {
-            $soap = new \SoapClient($this->url);
+            $xml = $this->createXML(type: "DELETE");
+            echo "<pre>";
+            dump($xml);
+            echo "</pre>";
 
-            $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $this->createXML(type: "DELETE")]]);
+            $soap = new \SoapClient($this->url);
+            $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $xml]]);
 
             if ( ! $res->getPDFLabelReturn->documentCorrect ) {
                 dd($res->getPDFLabelReturn->outputString);
@@ -149,13 +159,13 @@ class Shipping extends Tnt
                 'consignmenttype' => 'T', // C = chiave fornita dal client, T = fornita da TNT
                 
                 // colli
-                'actualweight' => '00001500', // variabile in grammi
-                'totalpackages' => '1', // variabile
+                'actualweight' => $this->movement->total_weight, // variabile in grammi
+                'totalpackages' => $this->movement->total_boxes, // variabile
                 'packagetype' => 'C', // C= Colli, S= Buste; B Bauletti piccoli; D Bauletti grandi
                 
                 'division' => '',
                 'product' => 'N',
-                'collectiondate' => now()->format('Ymd'), // data di affidamento a spedizione YYYYMMDD
+                'collectiondate' => $this->movement->collection_date?->format('Y-m-d') ?? now()->format('Ymd'), // data di affidamento a spedizione YYYYMMDD
                 'termsofpayment' => 'S', // S = mittente, R = destinatario
                 'systemcode' => 'RL', // fisso
                 'systemversion' => '1.0', // fisso
@@ -170,9 +180,9 @@ class Shipping extends Tnt
                         '_attributes' => [
                             'itemaction' => 'I', // I inserimento, D cancellazione, R ristampa
                         ],
-                        'itemtype' => 'C', // C collo, S buste, B bauletti piccoli, D Bauletti grandi
-                        'weight' => '00001500', // grammi
-                        'quantity' => '1',
+                        'itemtype' => 'S', // C collo, S buste, B bauletti piccoli, D Bauletti grandi
+                        'weight' => $this->movement->total_weight, // grammi
+                        'quantity' => $this->movement->total_boxes,
                     ]
                 ],
             ]
