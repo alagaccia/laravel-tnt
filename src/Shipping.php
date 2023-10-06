@@ -115,13 +115,6 @@ class Shipping extends Tnt
 
     public function XML_create()
     {
-        $typeOfAction = [
-            "INSERT" => "I",
-            "EDIT" => "M",
-            "DELETE" => "D",
-            "PRINT" => "R",
-        ];
-
         $body = [
             'software' => [
                 'application' => 'MYRTL', // MYRTLI = internazionale
@@ -174,7 +167,6 @@ class Shipping extends Tnt
                 ],
             ]
         ];
-
 
         $xml = ArrayToXml::convert($body, $this->xml_root(), true, 'UTF-8', '1.0', []);
 
