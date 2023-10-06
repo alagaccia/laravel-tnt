@@ -9,9 +9,9 @@ class Tracking extends Tnt
 {
     protected $url;
 
-    public function __construct()
+    public function __construct($credentials = null)
     {
-        parent::__construct();
+        parent::__construct($credentials);
         
         $this->url = 'https://www.mytnt.it/XMLServices';
     }
