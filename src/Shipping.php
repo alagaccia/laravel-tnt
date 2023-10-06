@@ -52,9 +52,7 @@ class Shipping extends Tnt
                 ];
             }
         } catch (\SoapFault $e) {
-            header('Content-Type: text/html');
-            header('Expires: 0');
-            print_r($e);
+            return $e->getMessage();
         }
     }
 
@@ -82,9 +80,7 @@ class Shipping extends Tnt
                 return $res->getPDFLabelReturn->binaryDocument;
             }
         } catch (\SoapFault $e) {
-            header('Content-Type: text/html');
-            header('Expires: 0');
-            print_r($e);
+            return $e->getMessage();
         }
     }
 
@@ -105,9 +101,7 @@ class Shipping extends Tnt
             return $res->getPDFLabelReturn->outputString;
 
         } catch (\SoapFault $e) {
-            header('Content-Type: text/html');
-            header('Expires: 0');
-            print_r($e);
+            return $e->getMessage();
         }
     }
 
