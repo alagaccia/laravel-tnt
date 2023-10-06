@@ -159,7 +159,7 @@ class Shipping extends Tnt
                 'consignmenttype' => 'T', // C = chiave fornita dal client, T = fornita da TNT
                 
                 // colli
-                'actualweight' => $this->movement->total_weight, // variabile in grammi
+                'actualweight' => str_pad($this->movement->total_weight, 8, "0", STR_PAD_LEFT), // variabile in grammi
                 'totalpackages' => $this->movement->total_boxes, // variabile
                 'packagetype' => 'C', // C= Colli, S= Buste; B Bauletti piccoli; D Bauletti grandi
                 
@@ -181,7 +181,7 @@ class Shipping extends Tnt
                             'itemaction' => 'I', // I inserimento, D cancellazione, R ristampa
                         ],
                         'itemtype' => 'S', // C collo, S buste, B bauletti piccoli, D Bauletti grandi
-                        'weight' => $this->movement->total_weight, // grammi
+                        'weight' => str_pad($this->movement->total_weight, 8, "0", STR_PAD_LEFT), // grammi
                         'quantity' => $this->movement->total_boxes,
                     ]
                 ],
