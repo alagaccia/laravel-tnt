@@ -88,9 +88,6 @@ class Shipping extends Tnt
 
         try {
             $xml = $this->createXML(type: "DELETE");
-            echo "<pre>";
-            dump($xml);
-            echo "</pre>";
 
             $soap = new \SoapClient($this->url);
             $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $xml]]);
@@ -99,17 +96,7 @@ class Shipping extends Tnt
                 dd($res->getPDFLabelReturn->outputString);
             }
 
-            dd($res);
-            // $xml_res = simplexml_load_string($res->getPDFLabelReturn->outputString);
-            // $json = json_encode($xml_res);
-            // $res = json_decode($json);
-            // dump($obj->Complete->TNTConNo);
-
-            header('Content-Description: File Transfer');
-            header('Content-Type: application/pdf');
-            header('Content-Disposition: attachment; filename="Label.pdf"');
-            header('Expires: 0');
-            echo $res->getPDFLabelReturn->binaryDocument;
+            return $res->getPDFLabelReturn->outputString;
 
         } catch (\SoapFault $e) {
             header('Content-Type: text/html');
