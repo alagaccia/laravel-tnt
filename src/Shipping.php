@@ -94,11 +94,12 @@ class Shipping extends Tnt
             $soap = new \SoapClient($this->url);
             $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $xml]]);
 
+            // In caso di cancellazione documentCorrect è false
             if ( ! $res->getPDFLabelReturn->documentCorrect ) {
+                return $res->getPDFLabelReturn->outputString;
+            } else {
                 dd($res->getPDFLabelReturn->outputString);
             }
-
-            return $res->getPDFLabelReturn->outputString;
 
         } catch (\SoapFault $e) {
             return $e->getMessage();
