@@ -64,6 +64,8 @@ class Shipping extends Tnt
             $arrayXml['shipment']['consignment']['_attributes']['action'] = 'R';
             $xmlPrint = ArrayToXml::convert($arrayXml, '', true, 'UTF-8', '1.0', []);
 
+            return $xmlPrint;
+
             $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $xmlPrint]]);
 
             if ( ! $res->getPDFLabelReturn->documentCorrect ) {
