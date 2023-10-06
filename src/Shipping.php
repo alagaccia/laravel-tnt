@@ -61,19 +61,19 @@ class Shipping extends Tnt
 
             $arrayXml = json_decode($xml, associative: true);
             // Sostituire type of action con PRINT
+            $arrayXml['shipment']['consignment']['_attributes']['action'] = 'R';
+            $xmlPrint = ArrayToXml::convert($arrayXml, '', true, 'UTF-8', '1.0', []);
 
-            $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $this->XML_create(type: "PRINT")]]);
+            $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $xmlPrint]]);
 
             if ( ! $res->getPDFLabelReturn->documentCorrect ) {
                 dd($res->getPDFLabelReturn->outputString);
             } else {
-                // header('Content-Description: File Transfer');
-                // header('Content-Type: application/pdf');
-                // header('Content-Disposition: attachment; filename="Label.pdf"');
-                // header('Expires: 0');
-                // echo $res->getPDFLabelReturn->binaryDocument;
-
-                return $res->getPDFLabelReturn->outputString;
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/pdf');
+                header('Content-Disposition: attachment; filename="Label.pdf"');
+                header('Expires: 0');
+                echo $res->getPDFLabelReturn->binaryDocument;
             }
         } catch (\SoapFault $e) {
             header('Content-Type: text/html');
@@ -105,6 +105,17 @@ class Shipping extends Tnt
         }
     }
 
+    public function xml_root()
+    {
+        return [
+            'rootElementName' => 'shipment',
+            '_attributes' => [
+                'xsi:noNamespaceSchemaLocation' => 'c:routinglabel.xsd',
+                'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
+            ]
+            ];
+    }
+
     public function XML_create($type = "INSERT")
     {
         $typeOfAction = [
@@ -112,14 +123,6 @@ class Shipping extends Tnt
             "EDIT" => "M",
             "DELETE" => "D",
             "PRINT" => "R",
-        ];
-
-        $rootElement = [
-            'rootElementName' => 'shipment',
-            '_attributes' => [
-                'xsi:noNamespaceSchemaLocation' => 'c:routinglabel.xsd',
-                'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
-            ]
         ];
 
         $body = [
@@ -176,21 +179,13 @@ class Shipping extends Tnt
         ];
 
 
-        $xml = ArrayToXml::convert($body, $rootElement, true, 'UTF-8', '1.0', []);
+        $xml = ArrayToXml::convert($body, $this->xml_root(), true, 'UTF-8', '1.0', []);
 
         return $xml;
     }
 
     public function XML_delete()
     {
-        $rootElement = [
-            'rootElementName' => 'shipment',
-            '_attributes' => [
-                'xsi:noNamespaceSchemaLocation' => 'c:routinglabel.xsd',
-                'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
-            ]
-        ];
-
         $body = [
             'software' => [
                 'application' => 'MYRTL', // MYRTLI = internazionale
@@ -208,7 +203,7 @@ class Shipping extends Tnt
         ];
 
 
-        $xml = ArrayToXml::convert($body, $rootElement, true, 'UTF-8', '1.0', []);
+        $xml = ArrayToXml::convert($body, $this->xml_root(), true, 'UTF-8', '1.0', []);
 
         return $xml;
     }
