@@ -69,11 +69,11 @@ class Shipping extends Tnt
             if ( ! $res->getPDFLabelReturn->documentCorrect ) {
                 dd($res->getPDFLabelReturn->outputString);
             } else {
-                header('Content-Description: File Transfer');
-                header('Content-Type: application/pdf');
-                header('Content-Disposition: attachment; filename="Label.pdf"');
-                header('Expires: 0');
-                echo $res->getPDFLabelReturn->binaryDocument;
+                // header('Content-Description: File Transfer');
+                // header('Content-Type: application/pdf');
+                // header('Content-Disposition: attachment; filename="Label.pdf"');
+                // header('Expires: 0');
+                return $res->getPDFLabelReturn->binaryDocument;
             }
         } catch (\SoapFault $e) {
             header('Content-Type: text/html');
