@@ -253,15 +253,15 @@ class Shipping extends Tnt
     {
         return [
             'addressType' => 'R',
-            'name' => $this->movement->receiver->name,
-            'addrline1' => $this->movement->receiver->address1,
-            'addrline2' => $this->movement->receiver->address2 ?? null,
+            'name' => $this->movement->receiver->name . ($this->movement->receiver->at ? " @ {$this->movement->receiver->name}" : null),
+            'addrline1' => $this->movement->receiver->address,
             'town' => $this->movement->receiver->town,
             'postcode' => $this->movement->receiver->postcode,
             'province' => $this->movement->receiver->province,
             'country' => $this->movement->receiver->country,
-            'phone1' => $this->movement->receiver->phone1,
-            'phone2' => $this->movement->receiver->phone2,
+            'phone1' => $this->movement->receiver->phone_code,
+            'phone2' => $this->movement->receiver->phone_number,
+            'email' => $this->movement->receiver->email,
         ];
     }
 }
