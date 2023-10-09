@@ -260,7 +260,8 @@ class Shipping extends Tnt
             'postcode' => $this->movement->receiver->postcode,
             'province' => $this->movement->receiver->province,
             'country' => $this->movement->receiver->country,
-            'phone1' => $this->movement->receiver->phone,
+            'phone1' => $this->movement->receiver->phone1,
+            'phone2' => $this->movement->receiver->phone2,
         ];
     }
 }
