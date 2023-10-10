@@ -45,8 +45,8 @@ class Shipping extends Tnt
 
             if ( ! $res->getPDFLabelReturn->documentCorrect ) {
                 
-                $xml = simplexml_load_string($res->getPDFLabelReturn->outputString, "SimpleXMLElement", LIBXML_NOCDATA);
-                $json = json_encode($xml);
+                $result_xml = simplexml_load_string($res->getPDFLabelReturn->outputString, "SimpleXMLElement", LIBXML_NOCDATA);
+                $json = json_encode($result_xml);
                 $array = json_decode($json,TRUE);
 
                 return [
