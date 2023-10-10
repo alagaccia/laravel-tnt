@@ -44,11 +44,13 @@ class Shipping extends Tnt
             $res = $soap->__soapCall('getPDFLabel', [['inputXml' => $xml]]);
 
             if ( ! $res->getPDFLabelReturn->documentCorrect ) {
+                
                 $xml = simplexml_load_string($res->getPDFLabelReturn->outputString, "SimpleXMLElement", LIBXML_NOCDATA);
                 $json = json_encode($xml);
                 $array = json_decode($json,TRUE);
-                
-                abort(500, $array['Message']);
+
+                return $array;
+                // return $res->getPDFLabelReturn->outputString;
             } else {
                 return [
                     'label_request' => $xml,
