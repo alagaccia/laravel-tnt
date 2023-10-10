@@ -229,7 +229,7 @@ class Shipping extends Tnt
     {
         return [
             'addressType' => 'S',
-            'name' => $this->movement->sender->name,
+            'name' => $this->movement->sender->name . ($this->movement->sender->at ? " @ {$this->movement->sender->at}" : null),
             'addrline1' => $this->movement->sender->address,
             'town' => $this->movement->sender->town,
             'postcode' => $this->movement->sender->postcode,
@@ -243,7 +243,7 @@ class Shipping extends Tnt
     {
         return [
             'addressType' => 'C',
-            'name' => $this->movement->collection->name,
+            'name' => $this->movement->collection->name . ($this->movement->collection->at ? " @ {$this->movement->collection->at}" : null),
             'addrline1' => $this->movement->collection->address,
             'town' => $this->movement->collection->town,
             'postcode' => $this->movement->collection->postcode,
