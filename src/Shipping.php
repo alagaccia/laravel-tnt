@@ -224,8 +224,7 @@ class Shipping extends Tnt
         return [
             'addressType' => 'S',
             'name' => $this->movement->sender->name,
-            'addrline1' => $this->movement->sender->address1,
-            'addrline2' => '',
+            'addrline1' => $this->movement->sender->address,
             'town' => $this->movement->sender->town,
             'postcode' => $this->movement->sender->postcode,
             'province' => $this->movement->sender->province,
@@ -239,8 +238,7 @@ class Shipping extends Tnt
         return [
             'addressType' => 'C',
             'name' => $this->movement->collection->name,
-            'addrline1' => $this->movement->collection->address1,
-            'addrline2' => $this->movement->collection->address2 ?? null,
+            'addrline1' => $this->movement->collection->address,
             'town' => $this->movement->collection->town,
             'postcode' => $this->movement->collection->postcode,
             'province' => $this->movement->collection->province,
