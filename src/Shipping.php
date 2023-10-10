@@ -49,7 +49,10 @@ class Shipping extends Tnt
                 $json = json_encode($xml);
                 $array = json_decode($json,TRUE);
 
-                return $array;
+                return [
+                    'request' => $xml,
+                    'error' => $array,
+                ];
                 // return $res->getPDFLabelReturn->outputString;
             } else {
                 return [
