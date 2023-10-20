@@ -286,9 +286,9 @@ class Shipping extends Tnt
                 'secopntime' => '1300', // Orario apertura pomeriggio
                 'secclotime' => '1700', // Orario chiusura pomeriggio
                 'availabilitytime' => $this->movement->collection_time_min?->format('Hi'), // Disponibilitá della merce
-                'pickupdate' => $this->movement->collection_date?->format('d.m.Y'), // Data ritiro DD.MM.YYYY
-                'pickupdays' => 1,
-                'pickuptime' => $this->movement->collection_time_max?->format('Hi'), // Orario ritiro (Max)
+                'pickupdate' => $this->movement->collection_date->format('d.m.Y'), // Data ritiro DD.MM.YYYY
+                'pickupdays' => today()->diffInDays($this->movement->collection_date),
+                'pickuptime' => $this->movement->collection_time_min->format('Hi'), // Orario ritiro (Max)
             ];
         }
         return null;
