@@ -174,13 +174,13 @@ class Shipping extends Tnt
                         'quantity' => $this->movement->total_boxes,
                     ]
                 ],
-                // 'collectiontrg' => $this->booking(),
+                'collectiontrg' => $this->booking(),
             ]
         ];
 
-        // if ( empty($body['consignment']['collectiontrg']) ) {
-        //     unset($body['consignment']['collectiontrg']); 
-        // }
+        if ( empty($body['consignment']['collectiontrg']) ) {
+            unset($body['consignment']['collectiontrg']); 
+        }
 
         $xml = ArrayToXml::convert($body, $this->xml_root(), true, 'UTF-8', '1.0', []);
 
