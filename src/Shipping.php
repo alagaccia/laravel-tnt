@@ -178,7 +178,7 @@ class Shipping extends Tnt
         ];
 
         if ( $this->movement->has_booking ) {
-            array_push($data, $this->booking());
+            array_push($body, $this->booking());
         }
 
         $xml = ArrayToXml::convert($body, $this->xml_root(), true, 'UTF-8', '1.0', []);
