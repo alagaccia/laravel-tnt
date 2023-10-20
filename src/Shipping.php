@@ -174,11 +174,12 @@ class Shipping extends Tnt
                         'quantity' => $this->movement->total_boxes,
                     ]
                 ],
+                'collectiontrg' => $this->booking(),
             ]
         ];
 
-        if ( $this->movement->has_booking ) {
-            $body = array_merge($body, $this->booking());
+        if ( empty($body['consignment']['collectiontrg']) ) {
+            unset($body['consignment']['collectiontrg']); 
         }
 
         $xml = ArrayToXml::convert($body, $this->xml_root(), true, 'UTF-8', '1.0', []);
@@ -278,8 +279,8 @@ class Shipping extends Tnt
 
     public function booking()
     {
-        return [
-            'collectiontrg' => [
+        if ($this->movement->has_booking) {
+            return [
                 'priopntime' => '0900', // Orario apertura mattino
                 'priclotime' => '1300', // Orario chiusura mattino
                 'secopntime' => '1300', // Orario apertura pomeriggio
@@ -288,7 +289,8 @@ class Shipping extends Tnt
                 'pickupdate' => $this->movement->collection_date?->format('d.m.Y'), // Data ritiro DD.MM.YYYY
                 'pickupdays' => 1,
                 'pickuptime' => $this->movement->collection_time_max?->format('Hi'), // Orario ritiro (Max)
-            ]
-        ];
+            ];
+        }
+        return null;
     }
 }
