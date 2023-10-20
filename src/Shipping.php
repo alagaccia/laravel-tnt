@@ -178,7 +178,7 @@ class Shipping extends Tnt
         ];
 
         if ( $this->movement->has_booking ) {
-            array_push($body, $this->booking());
+            $body = array_merge($body, $this->booking());
         }
 
         $xml = ArrayToXml::convert($body, $this->xml_root(), true, 'UTF-8', '1.0', []);
@@ -284,11 +284,11 @@ class Shipping extends Tnt
                 'priclotime' => '1300', // Orario chiusura mattino
                 'secopntime' => '1300', // Orario apertura pomeriggio
                 'secclotime' => '1700', // Orario chiusura pomeriggio
-                'availabilitytime' => $this->movement->collection_time_min->format('Hi'), // Disponibilitá della merce
-                'pickupdate' => $this->movement->collection_date->format('d.m.Y'), // Data ritiro DD.MM.YYYY
+                'availabilitytime' => $this->movement->collection_time_min?->format('Hi'), // Disponibilitá della merce
+                'pickupdate' => $this->movement->collection_date?->format('d.m.Y'), // Data ritiro DD.MM.YYYY
                 'pickupdays' => 1,
-                'pickuptime' => $this->movement->collection_time_max->format('Hi'), // Orario ritiro (Max)
-            ],
+                'pickuptime' => $this->movement->collection_time_max?->format('Hi'), // Orario ritiro (Max)
+            ]
         ];
     }
 }
