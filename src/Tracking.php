@@ -37,12 +37,23 @@ class Tracking extends Tnt
                 'xmlin' => $requestData,
             ]);
             $response = $res->body();
+            $statusCode = $res->status();
 
             if ($this->debug) {
-                Log::debug('TNT Tracking response', ['data' => $response]);
+                Log::debug('TNT Tracking response', ['status' => $statusCode, 'response' => $response]);
             }
 
-            $xml =  simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
+            if (empty($response)) {
+                Log::error('TNT Tracking: response body is empty', ['status' => $statusCode]);
+                return null;
+            }
+
+            $xml = @simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
+
+            if ($xml === false) {
+                Log::error('TNT Tracking: XML parsing failed', ['response' => $response]);
+                return null;
+            }
 
             if ($this->debug) {
                 Log::debug('TNT Tracking Response xml', ['data' => $xml]);
