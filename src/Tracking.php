@@ -58,6 +58,9 @@ class Tracking extends Tnt
             return $array;
 
         } catch (\Exception $e) {
+            if ($this->debug) {
+                Log::debug('TNT Tracking error', ['error' => $e->getMessage()]);
+            }
             return $e->getMessage();
         }
     }
