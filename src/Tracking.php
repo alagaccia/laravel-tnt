@@ -4,15 +4,19 @@ namespace AndreaLagaccia\Tnt;
 use AndreaLagaccia\Tnt\Tnt;
 use Spatie\ArrayToXml\ArrayToXml;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+
 
 class Tracking extends Tnt
 {
     protected $url;
+    protected $debug;
 
-    public function __construct($credentials = null)
+    public function __construct($credentials = null, $debug = false)
     {
         parent::__construct($credentials);
         
+        $this->debug = $debug;
         $this->url = 'https://www.mytnt.it/XMLServices';
     }
     
@@ -23,15 +27,33 @@ class Tracking extends Tnt
         }
         
         try {
+            $requestData = $this->createTrackingXML($consignmentno);
+
+            if ($this->debug) {
+                Log::debug('TNT Tracking request', ['data' => $requestData]);
+            }
+
             $res = Http::asForm()->post('https://www.mytnt.it/XMLServices', [
-                'xmlin' => $this->createTrackingXML($consignmentno),
+                'xmlin' => $requestData,
             ]);
             $response = $res->body();
 
+            if ($this->debug) {
+                Log::debug('TNT Tracking response', ['data' => $response]);
+            }
+
             $xml =  simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
+
+            if ($this->debug) {
+                Log::debug('TNT Tracking Response xml', ['data' => $xml]);
+            }
 
             $json = json_encode($xml);
             $array = json_decode($json, true);
+
+            if ($this->debug) {
+                Log::debug('TNT Tracking Response array', ['data' => $array]);
+            }
         
             return $array;
 
