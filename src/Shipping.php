@@ -249,9 +249,11 @@ class Shipping extends Tnt
 
     public function collection()
     {
+        $name = $this->movement->collection->shipping_warehouse_name ?? ($this->movement->collection->name . ($this->movement->collection->at ? " @ {$this->movement->collection->at}" : null));
+        
         return [
             'addressType' => 'C',
-            'name' => $this->movement->collection->name . ($this->movement->collection->at ? " @ {$this->movement->collection->at}" : null),
+            'name' => $name,
             'addrline1' => $this->movement->collection->address,
             'town' => $this->movement->collection->town,
             'postcode' => $this->movement->collection->postcode,
@@ -263,9 +265,11 @@ class Shipping extends Tnt
 
     public function receiver()
     {
+        $name = $this->movement->receiver->shipping_warehouse_name ?? ($this->movement->receiver->name . ($this->movement->receiver->at ? " @ {$this->movement->receiver->at}" : null));
+
         return [
             'addressType' => 'R',
-            'name' => $this->movement->receiver->name . ($this->movement->receiver->at ? " @ {$this->movement->receiver->at}" : null),
+            'name' => $name,
             'addrline1' => $this->movement->receiver->address,
             'town' => $this->movement->receiver->town,
             'postcode' => $this->movement->receiver->postcode,
